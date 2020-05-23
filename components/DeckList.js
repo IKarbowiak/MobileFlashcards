@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native
 import {AppLoading} from 'expo'
 
 import {getDecks} from '../utils/api'
+import { white } from '../utils/colors'
 
 
 class DeckList extends Component {
@@ -13,6 +14,7 @@ class DeckList extends Component {
   componentDidMount() {
     getDecks()
       .then((decks) => {
+        // TODO: sort
         this.setState({
           decks
         })
@@ -36,8 +38,8 @@ class DeckList extends Component {
         {Object.keys(decks).map((key) => {
           const deck = decks[key]
           return (
-            <TouchableOpacity onPress={() => console.log('Pressed')}>
-              <View key={key} style={styles.deckInfo}>
+            <TouchableOpacity key={key} onPress={() => console.log('Pressed')}>
+              <View style={styles.deckInfo}>
                   <Text style={styles.deckTitle}>{deck.title}</Text>
                   <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
               </View>
@@ -52,8 +54,7 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
-    marginTop: 10,
+    backgroundColor: white,
   },
   deckInfo: {
     flex: 1,
