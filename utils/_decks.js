@@ -36,5 +36,5 @@ function setDefaultData() {
 export function handleDecks(results) {
   return results === null
     ? setDefaultData()
-    : results
+    : JSON.parse(results)
 }
