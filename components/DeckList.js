@@ -38,7 +38,9 @@ class DeckList extends Component {
         {Object.keys(decks).map((key) => {
           const deck = decks[key]
           return (
-            <TouchableOpacity key={key} onPress={() => console.log('Pressed')}>
+            <TouchableOpacity key={key} onPress={() => this.props.navigation.navigate(
+              'DeckView', {'deckId': key}
+            )}>
               <View style={styles.deckInfo}>
                   <Text style={styles.deckTitle}>{deck.title}</Text>
                   <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>

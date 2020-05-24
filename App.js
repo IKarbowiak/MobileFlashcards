@@ -11,6 +11,8 @@ import Constants from 'expo-constants'
 import {white} from './utils/colors'
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
+import DeckView from './components/DeckView'
+import AddCard from './components/AddCard'
 
 
 function FlashcardStatusBar({backgroundColor, ...props}) {
@@ -40,11 +42,11 @@ const TabNavigatorConfig = {
     header: null
   },
   tabBarOptions: {
-    activeTintColor: Platform.OS === "ios" ? 'black' : white,
+    activeTintColor: Platform.OS === 'ios' ? 'black' : white,
     style: {
-      height: Platform.OS === "ios" ? 90 : 56,
-      backgroundColor: Platform.OS === "ios" ? white : 'black',
-      shadowColor: "rgba(0, 0, 0, 0.24)",
+      height: Platform.OS === 'ios' ? 90 : 56,
+      backgroundColor: Platform.OS === 'ios' ? white : 'black',
+      shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
         height: 3
@@ -66,15 +68,41 @@ TabNav = () => (
   </Tab.Navigator>
 )
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
+const MainNav = () => (
+    <Stack.Navigator headerMode='screen'>
+        <Stack.Screen
+          name='Decks'
+          component={TabNav}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name='DeckView'
+          component={DeckView}
+          options={{
+              headerTintColor: white, headerStyle: {
+                  backgroundColor: 'black',
+              }
+          }}
+        />
+        <Stack.Screen
+          name='AddCard'
+          component={AddCard}
+          options={{headerTintColor: white, headerStyle: {
+              backgroundColor: 'black',
+            }
+          }}
+        />
+    </Stack.Navigator>
+);
 
 export default function App()  {
     return (
       <View style={styles.container}>
         <FlashcardStatusBar backgroundColor={'black'} barStyle='light-content' />
         <NavigationContainer style={styles.container}>
-            <TabNav />
+            <MainNav />
         </NavigationContainer>
       </View>
     )

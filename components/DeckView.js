@@ -6,12 +6,16 @@ import {white} from '../utils/colors'
 
 class DeckView extends Component {
   render () {
+    const {deckId} = this.props.route.params
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Test Deck</Text>
+        <Text style={styles.text}>{deckId}</Text>
+        <Text style={styles.cardsInfo}>XYZ cards</Text>
         <TouchableOpacity
           style={[styles.btnCont, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
-          onPress={this.submit}
+          onPress={() => this.props.navigation.navigate(
+            'AddCard', {'deckId': deckId}
+          )}
         >
           <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
         </TouchableOpacity>
@@ -36,7 +40,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 40,
     textAlign: 'center',
-    paddingBottom: 20,
   },
   input: {
     borderColor: 'gray',
@@ -54,6 +57,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: white,
     textAlign: 'center'
+  },
+  cardsInfo: {
+    fontSize: 20,
+    color: '#A9A9A9',
+    textAlign: 'center',
+    paddingBottom: 20,
   }
 })
 
