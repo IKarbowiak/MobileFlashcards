@@ -7,12 +7,15 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native'
+import {connect} from 'react-redux'
+import {CommonActions} from '@react-navigation/native'
 
 import {saveDeckTitle, getDecks} from '../utils/api'
 import {white} from '../utils/colors'
+import {addDeck} from '../actions'
 
 
-export default class NewDeck extends Component {
+class NewDeck extends Component {
   state = {
     title: ''
   }
@@ -27,23 +30,31 @@ export default class NewDeck extends Component {
     console.log("submit")
     const {title} = this.state
 
-    saveDeckTitle(title)
+    this.props.dispatch(addDeck(title))
 
     this.setState({
       title: ''
     })
 
+    saveDeckTitle(title)
+
     getDecks()
       .then((data) => console.log(data))
 
-     // navigate to decks
+     this.props.navigation.dispatch(
+      CommonActions.goBack({
+          key: 'Decks',
+      }))
 
   }
 
   render() {
     const {title} = this.state
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : null}
+      >
         <Text style={styles.text}>What is the title of your new deck?</Text>
         <TextInput
           style={styles.input}
@@ -89,3 +100,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
+
+export default connect()(NewDeck)

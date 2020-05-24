@@ -1,5 +1,5 @@
-import 'react-native-gesture-handler'
-import React from 'react'
+import React, {Component} from 'react'
+import {createStore} from 'redux'
 import { Platform, StyleSheet, Text, View, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -7,7 +7,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
 import Constants from 'expo-constants'
+import {Provider} from 'react-redux'
 
+import reducer from './reducers'
 import {white} from './utils/colors'
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
@@ -97,15 +99,19 @@ const MainNav = () => (
     </Stack.Navigator>
 );
 
-export default function App()  {
+export default class App extends Component {
+  render() {
     return (
-      <View style={styles.container}>
-        <FlashcardStatusBar backgroundColor={'black'} barStyle='light-content' />
-        <NavigationContainer style={styles.container}>
-            <MainNav />
-        </NavigationContainer>
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={styles.container}>
+          <FlashcardStatusBar backgroundColor={'black'} barStyle='light-content' />
+          <NavigationContainer style={styles.container}>
+              <MainNav />
+          </NavigationContainer>
+        </View>
+      </Provider>
     )
+  }
 }
 
 const styles = StyleSheet.create({

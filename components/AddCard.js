@@ -41,7 +41,10 @@ class AddCard extends Component {
     const {question, answer} = this.state
 
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : null}
+      >
         <Text style={styles.text}>Insert question and answer below</Text>
         <TextInput
           style={styles.input}

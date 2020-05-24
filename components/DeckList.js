@@ -1,24 +1,21 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
 import {AppLoading} from 'expo'
+import {connect} from 'react-redux'
 
 import {getDecks} from '../utils/api'
 import { white } from '../utils/colors'
+import {receiveDecks} from '../actions'
 
 
 class DeckList extends Component {
   state = {
-    decks: {},
     ready: false,
   }
   componentDidMount() {
+    const {dispatch} = this.props
     getDecks()
-      .then((decks) => {
-        // TODO: sort
-        this.setState({
-          decks
-        })
-      })
+      .then((decks) => dispatch(receiveDecks(decks)))
       .then(() => {
         this.setState({
           ready: true
@@ -27,7 +24,8 @@ class DeckList extends Component {
   }
 
   render() {
-    const {decks, ready} = this.state
+    const {decks} = this.props
+    const {ready} = this.state
     
     if (ready === false) {
       return <AppLoading/>
@@ -76,4 +74,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default DeckList
+
+function mapStateToProps(decks) {
+  // TODO: sort
+  return {
+    decks
+  }
+}
+
+export default connect(mapStateToProps)(DeckList)
