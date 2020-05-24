@@ -36,3 +36,12 @@ export function addCardToDeck({title, card}) {
       }))
     })
 }
+
+export function removeDeck(key) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      delete data[key]
+      AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+    })
+}
