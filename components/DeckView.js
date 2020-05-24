@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, Button, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import {CommonActions} from '@react-navigation/native'
 import {AppLoading} from 'expo'
@@ -55,13 +55,13 @@ class DeckView extends Component {
             <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btnCont, {backgroundColor: 'black', color: white}]}
+            style={[styles.btnCont, {backgroundColor: 'black'}]}
             onPress={this.startQuiz}
           >
             <Text style={styles.btnText}>Start Quiz</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, paddingHorizontal: 70}}>
           <Button
             title='Delete'
             color='red'

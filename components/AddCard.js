@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, KeyboardAvoidingView, TextInput, TouchableOpacity, StyleSheet} from 'react-native'
+import {Text, KeyboardAvoidingView, TextInput, TouchableOpacity, StyleSheet, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import {CommonActions} from '@react-navigation/native'
 

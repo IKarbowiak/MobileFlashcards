@@ -64,7 +64,7 @@ const Tab = Platform.OS === 'ios'
   ? createBottomTabNavigator() 
   : createMaterialTopTabNavigator()
 
-TabNav = () => (
+const TabNav = () => (
   <Tab.Navigator {...TabNavigatorConfig}>
     <Tab.Screen {...RouteConfigs['Decks']} />
     <Tab.Screen {...RouteConfigs['AddDeck']} />
