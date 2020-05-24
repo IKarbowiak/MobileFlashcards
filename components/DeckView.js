@@ -23,6 +23,17 @@ class DeckView extends Component {
     dropDeck(title)
 
   }
+
+  startQuiz = () => {
+    const {deck} = this.props
+    if (deck.questions.length === 0) {
+      alert('Deck must have at least one question to start a quiz.')
+      return
+    }
+    this.props.navigation.navigate(
+      'Quiz', {'deckId': deck.title}
+    )
+  }
   render () {
     const {deck} = this.props
 
@@ -45,7 +56,7 @@ class DeckView extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.btnCont, {backgroundColor: 'black', color: white}]}
-            onPress={this.submit}
+            onPress={this.startQuiz}
           >
             <Text style={styles.btnText}>Start Quiz</Text>
           </TouchableOpacity>

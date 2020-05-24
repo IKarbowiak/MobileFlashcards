@@ -15,6 +15,7 @@ import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import DeckView from './components/DeckView'
 import AddCard from './components/AddCard'
+import Quiz from './components/Quiz'
 
 
 function FlashcardStatusBar({backgroundColor, ...props}) {
@@ -91,6 +92,14 @@ const MainNav = () => (
         <Stack.Screen
           name='AddCard'
           component={AddCard}
+          options={{headerTintColor: white, headerStyle: {
+              backgroundColor: 'black',
+            }
+          }}
+        />
+        <Stack.Screen
+          name='Quiz'
+          component={Quiz}
           options={{headerTintColor: white, headerStyle: {
               backgroundColor: 'black',
             }
