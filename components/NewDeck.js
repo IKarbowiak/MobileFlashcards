@@ -30,6 +30,11 @@ class NewDeck extends Component {
     console.log("submit")
     const {title} = this.state
 
+    if (title === '') {
+      alert('You must fill title field')
+      return
+    }
+
     this.props.dispatch(addDeck(title))
 
     this.setState({

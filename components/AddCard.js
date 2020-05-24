@@ -30,6 +30,11 @@ class AddCard extends Component {
     const {question, answer} = this.state
     const {deckId, dispatch} = this.props
 
+    if (question === '' || answer === ''){
+      alert('You need to enter question and answer!')
+      return
+    }
+
     dispatch(addCardToDeck(deckId, {question, answer}))
 
     submitCard(deckId, {question, answer})
