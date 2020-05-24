@@ -21,7 +21,7 @@ function decks(state={}, action) {
         ...state,
         [action.deckId]: {
           ...state[action.deckId],
-          questions: state[action.deckId].questions.concat([{question, answer}])
+          questions: state[action.deckId].questions.concat([action.card])
         }
       }
     case REMOVE_DECK :

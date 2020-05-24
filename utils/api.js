@@ -25,7 +25,7 @@ export function saveDeckTitle(title) {
   }))
 }
 
-export function addCardToDeck({title, card}) {
+export function submitCard(title, card) {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)

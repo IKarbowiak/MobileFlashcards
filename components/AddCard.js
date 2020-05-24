@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import {Text, KeyboardAvoidingView, TextInput, TouchableOpacity, StyleSheet} from 'react-native'
+import {connect} from 'react-redux'
+import {CommonActions} from '@react-navigation/native'
 
 import { white } from '../utils/colors'
+import {addCardToDeck} from '../actions'
+import {submitCard} from '../utils/api'
 
 
 class AddCard extends Component {
@@ -24,16 +28,21 @@ class AddCard extends Component {
 
   submit = () => {
     const {question, answer} = this.state
-    console.log(question)
-    console.log(answer)
+    const {deckId, dispatch} = this.props
+
+    dispatch(addCardToDeck(deckId, {question, answer}))
+
+    submitCard(deckId, {question, answer})
 
     this.setState({
       question: '',
       answer: '',
     })
-    // TODO: add redux
 
-    // Go back to decks view
+    this.props.navigation.dispatch(
+      CommonActions.goBack({
+          key: 'DeckView',
+      }))
 
   }
 
@@ -98,4 +107,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddCard
+
+function mapStateToProps(state, {route}) {
+  const {deckId} = route.params
+  console.log(deckId)
+  return {
+    deckId,
+  }
+}
+
+export default connect(mapStateToProps)(AddCard)

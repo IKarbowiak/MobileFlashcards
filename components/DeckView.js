@@ -38,7 +38,7 @@ class DeckView extends Component {
           <TouchableOpacity
             style={[styles.btnCont, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
             onPress={() => this.props.navigation.navigate(
-              'AddCard', {'deckId': deckId}
+              'AddCard', {'deckId': deck.title}
             )}
           >
             <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
