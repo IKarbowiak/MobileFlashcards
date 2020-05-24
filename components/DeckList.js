@@ -33,8 +33,8 @@ class DeckList extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        {Object.keys(decks).map((key) => {
-          const deck = decks[key]
+        {decks.map((deck) => {
+          const key = deck.title
           return (
             <TouchableOpacity key={key} onPress={() => this.props.navigation.navigate(
               'DeckView', {'deckId': key}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(decks) {
   // TODO: sort
   return {
-    decks
+    decks: Object.values(decks).sort((a, b) => a.title.localeCompare(b.title))
   }
 }
 
