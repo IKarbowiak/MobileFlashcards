@@ -1,30 +1,63 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native'
+import {connect} from 'react-redux'
+import {CommonActions} from '@react-navigation/native'
+import {AppLoading} from 'expo'
 
 import {white} from '../utils/colors'
+import {removeDeck} from '../actions'
+import {dropDeck} from '../utils/api'
 
 
 class DeckView extends Component {
+  delete = () => {
+    const {deck, dispatch} = this.props
+    const title = deck.title
+    dispatch(removeDeck(title))
+
+    this.props.navigation.dispatch(
+      CommonActions.goBack({
+          key: 'Decks',
+      }))
+
+    dropDeck(title)
+
+  }
   render () {
-    const {deckId} = this.props.route.params
+    const {deck} = this.props
+
+    if (deck === undefined) {
+      return <AppLoading/>
+    }
+
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>{deckId}</Text>
-        <Text style={styles.cardsInfo}>XYZ cards</Text>
-        <TouchableOpacity
-          style={[styles.btnCont, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
-          onPress={() => this.props.navigation.navigate(
-            'AddCard', {'deckId': deckId}
-          )}
-        >
-          <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.btnCont, {backgroundColor: 'black', color: white}]}
-          onPress={this.submit}
-        >
-          <Text style={styles.btnText}>Start Quiz</Text>
-        </TouchableOpacity>
+        <View style={{flex: 4, justifyContent: 'center'}}>
+          <Text style={styles.text}>{deck.title}</Text>
+          <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
+          <TouchableOpacity
+            style={[styles.btnCont, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
+            onPress={() => this.props.navigation.navigate(
+              'AddCard', {'deckId': deckId}
+            )}
+          >
+            <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.btnCont, {backgroundColor: 'black', color: white}]}
+            onPress={this.submit}
+          >
+            <Text style={styles.btnText}>Start Quiz</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{flex: 1}}>
+          <Button
+            title='Delete'
+            color='red'
+            onPress={this.delete}
+            style={{fontSize: 20}}
+          />
+        </View>
       </View>
     )
   }
@@ -63,7 +96,15 @@ const styles = StyleSheet.create({
     color: '#A9A9A9',
     textAlign: 'center',
     paddingBottom: 20,
-  }
+  },
 })
 
-export default DeckView
+
+function mapStateToProps(state, {route}) {
+  const {deckId} = route.params
+  return {
+    deck: state[deckId]
+  }
+}
+
+export default connect(mapStateToProps)(DeckView)

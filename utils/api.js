@@ -37,7 +37,7 @@ export function addCardToDeck({title, card}) {
     })
 }
 
-export function removeDeck(key) {
+export function dropDeck(key) {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
