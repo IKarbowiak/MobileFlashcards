@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import { white } from '../utils/colors'
+import { FontAwesome5 } from '@expo/vector-icons' 
+
 
 class Quiz extends Component {
   state = {
@@ -11,22 +13,51 @@ class Quiz extends Component {
   }
 
   showAnswer = () => {
+    this.setState({
+      answered: true
+    })
+  }
+  
+  correct = () =>{
     this.setState((currentState) => ({
-      answered: !currentState.answered
+      score: currentState.score + 1,
+      counter: currentState.counter +1,
+      answered: false,
+    }))
+  }
+
+  incorrect = () => {
+    this.setState((currentState) => ({
+      counter: currentState.counter +1,
+      answered: false,
     }))
   }
 
   render() {
-    const {counter} = this.state
+    const {counter, score, answered} = this.state
     const {deck} = this.props
     const cardNum = deck.questions.length
+  
     if (counter >=  cardNum) {
       return (
-        <View>
-          <Text>Congratulations! You finished quiz.</Text>
-          <Text>Your score is:</Text>
-          <Text>{Math.round(score/cardNum * 100)}%</Text>
-          <Text>{score}/{cardNum}</Text>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            Congratulations! You finished the quiz.{"\n"}Your score is:
+          </Text>
+          <Text style={styles.resultPer}>
+            {Math.round(score/cardNum * 100)}%
+          </Text>
+          <Text style={styles.result}>
+            {score} correct / {cardNum} all
+          </Text>
+          <View style={{alignItems: 'center', padding: 20}}>
+            {score/cardNum === 0 && 
+              <FontAwesome5 name="sad-tear" size={50} color="black"/>
+            }
+            {score/cardNum === 1 && 
+              <FontAwesome5 name="smile-beam" size={50} color="black" />
+            }
+          </View>
         </View>
       )
     }
@@ -43,7 +74,7 @@ class Quiz extends Component {
           <Text style={styles.text}>
                 {card.question}
           </Text>
-          {!this.state.answered
+          {!answered
             ? (
               <View >
                 <Button
@@ -61,13 +92,13 @@ class Quiz extends Component {
                 </Text>
                 <TouchableOpacity
                   style={[styles.btnCont, {backgroundColor: 'green'}]}
-                  onPress={() => console.log('Pressed ans')}
+                  onPress={this.correct}
                 >
                   <Text style={[styles.btnText, {color: 'white'}]}>Correct</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.btnCont, {backgroundColor: 'red', color: white}]}
-                  onPress={() => console.log('Pressed ans')}
+                  onPress={this.incorrect}
                 >
                   <Text style={[styles.btnText, {color: 'white'}]}>Incorrect</Text>
                 </TouchableOpacity>
@@ -118,6 +149,20 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.50)',
     textShadowOffset: {width: 0, height: 2},
     textShadowRadius: 4,
+  },
+  resultPer: {
+    color: '#482869',
+    textShadowColor: 'rgba(72, 40, 105, 0.50)',
+    textShadowOffset: {width: 0, height: 2},
+    textShadowRadius: 4,
+    fontSize: 30,
+    textAlign: 'center',
+  },
+  result: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#370966',
+
   }
 })
 
