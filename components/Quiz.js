@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
-import { white } from '../utils/colors'
 import { FontAwesome5 } from '@expo/vector-icons' 
 
+import { white } from '../utils/colors'
+import {clearLocalNotifications, setLocalNotification} from '../utils/notifications'
 
 class Quiz extends Component {
   state = {
@@ -39,6 +40,9 @@ class Quiz extends Component {
     const cardNum = deck.questions.length
   
     if (counter >=  cardNum) {
+      clearLocalNotifications()
+        .then(setLocalNotification)
+
       return (
         <View style={styles.container}>
           <Text style={styles.text}>
@@ -63,8 +67,7 @@ class Quiz extends Component {
     }
 
     const card = deck.questions[counter]
-    console.log(card)
-
+ 
     return (
       <View style={{flex: 1, backgroundColor: white}}>
         <View style={styles.counter}>
