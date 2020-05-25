@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, {route}) {
   const {deckId} = route.params
-  console.log(deckId)
   return {
     deckId,
   }

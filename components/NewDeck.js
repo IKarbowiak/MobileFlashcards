@@ -27,7 +27,6 @@ class NewDeck extends Component {
   }
 
   submit = () => {
-    console.log("submit")
     const {title} = this.state
 
     if (title === '') {
@@ -42,9 +41,6 @@ class NewDeck extends Component {
     })
 
     saveDeckTitle(title)
-
-    getDecks()
-      .then((data) => console.log(data))
 
      this.props.navigation.dispatch(
       CommonActions.goBack({
