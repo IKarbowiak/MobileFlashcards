@@ -34,6 +34,14 @@ class Quiz extends Component {
     }))
   }
 
+  reset = () => {
+    this.setState({
+      answered: false,
+      score: 0,
+      counter: 0,
+    })
+  }
+
   render() {
     const {counter, score, answered} = this.state
     const {deck} = this.props
@@ -61,6 +69,22 @@ class Quiz extends Component {
             {score/cardNum === 1 && 
               <FontAwesome5 name="smile-beam" size={50} color="black" />
             }
+          </View>
+          <View>
+            <TouchableOpacity
+              style={[styles.resultBtn, {backgroundColor: 'black'}]}
+              onPress={this.reset}
+              >
+                <Text style={[styles.btnText, {color: 'white'}]}>Start Quiz again!</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.resultBtn, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
+                onPress={() => this.props.navigation.navigate(
+                  'DeckView', {'deckId': deck.title}
+                )}
+              >
+                <Text style={[styles.btnText, {color: 'black'}]}>Go back to deck</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )
@@ -165,7 +189,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     color: '#370966',
-
+  },
+  resultBtn: {
+    padding: 10,
+    borderRadius: 10,
+    marginHorizontal: 50,
+    marginVertical: 10,
   }
 })
 
