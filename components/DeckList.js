@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated} from 'react-native'
 import {AppLoading} from 'expo'
 import {connect} from 'react-redux'
 
@@ -11,21 +11,34 @@ import {receiveDecks} from '../actions'
 class DeckList extends Component {
   state = {
     ready: false,
+    bounceValues: [],
   }
   componentDidMount() {
     const {dispatch} = this.props
     getDecks()
       .then((decks) => dispatch(receiveDecks(decks)))
-      .then(() => {
+      .then(({decks}) => {
         this.setState({
-          ready: true
+          ready: true,
+          bounceValues: [...Array(Object.keys(decks).length).keys()].map(() => new Animated.Value(1)),
         })
       })
   }
 
+  goToDeckView = (key, index) => {
+    const {bounceValues} = this.state
+  
+    Animated.sequence([
+      Animated.timing(bounceValues[index], {duration: 150, toValue: 1.04}),
+      Animated.timing(bounceValues[index], {toValue: 1, duration: 120})
+    ]).start(() => this.props.navigation.navigate(
+      'DeckView', {'deckId': key}
+    ))
+  }
+
   render() {
     const {decks} = this.props
-    const {ready} = this.state
+    const {ready, bounceValues} = this.state
     
     if (ready === false) {
       return <AppLoading/>
@@ -33,15 +46,17 @@ class DeckList extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        {decks.map((deck) => {
+        {decks.map((deck, index) => {
           const key = deck.title
           return (
-            <TouchableOpacity key={key} onPress={() => this.props.navigation.navigate(
-              'DeckView', {'deckId': key}
-            )}>
+            <TouchableOpacity key={key} onPress={() => this.goToDeckView(key, index)}>
               <View style={styles.deckInfo}>
-                  <Text style={styles.deckTitle}>{deck.title}</Text>
-                  <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
+                  <Animated.Text style={[styles.deckTitle, {transform: [{scale: bounceValues[index]}]}]}>
+                    {deck.title}
+                  </Animated.Text>
+                  <Animated.Text style={[styles.cardsInfo, {transform: [{scale: bounceValues[index]}]}]}>
+                    {deck.questions.length} cards
+                  </Animated.Text>
               </View>
             </TouchableOpacity>
           )
@@ -76,7 +91,6 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(decks) {
-  // TODO: sort
   return {
     decks: Object.values(decks).sort((a, b) => a.title.localeCompare(b.title))
   }
