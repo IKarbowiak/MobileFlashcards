@@ -5,6 +5,8 @@ import { FontAwesome5 } from '@expo/vector-icons'
 
 import { white } from '../utils/colors'
 import {clearLocalNotifications, setLocalNotification} from '../utils/notifications'
+import {shuffleData} from '../utils/helpers'
+
 
 class Quiz extends Component {
   state = {
@@ -44,8 +46,8 @@ class Quiz extends Component {
 
   render() {
     const {counter, score, answered} = this.state
-    const {deck} = this.props
-    const cardNum = deck.questions.length
+    const {deckId, questions} = this.props
+    const cardNum = questions.length
   
     if (counter >=  cardNum) {
       clearLocalNotifications()
@@ -75,12 +77,12 @@ class Quiz extends Component {
               style={[styles.resultBtn, {backgroundColor: 'black'}]}
               onPress={this.reset}
               >
-                <Text style={[styles.btnText, {color: 'white'}]}>Start Quiz again!</Text>
+                <Text style={[styles.btnText, {color: 'white'}]}>Start the Quiz again!</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.resultBtn, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
                 onPress={() => this.props.navigation.navigate(
-                  'DeckView', {'deckId': deck.title}
+                  'DeckView', {'deckId': deckId}
                 )}
               >
                 <Text style={[styles.btnText, {color: 'black'}]}>Go back to deck</Text>
@@ -90,7 +92,7 @@ class Quiz extends Component {
       )
     }
 
-    const card = deck.questions[counter]
+    const card = questions[counter]
  
     return (
       <View style={{flex: 1, backgroundColor: white}}>
@@ -200,8 +202,12 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, {route}) {
   const {deckId} = route.params
+  const deck = state[deckId]
+  const questions = shuffleData(deck.questions)
+
   return {
-    deck: state[deckId]
+    deckId,
+    questions
   }
 }
 
