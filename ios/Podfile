@@ -45,4 +45,6 @@ target 'mobileflashcards' do
   use_native_modules!
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
+
 end

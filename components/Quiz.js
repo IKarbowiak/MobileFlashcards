@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
-import { FontAwesome5 } from '@expo/vector-icons' 
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
+import * as Speech from 'expo-speech'
 
 import { white } from '../utils/colors'
 import {clearLocalNotifications, setLocalNotification} from '../utils/notifications'
@@ -15,18 +16,20 @@ class Quiz extends Component {
     counter: 0,
   }
 
-  showAnswer = () => {
+  showAnswer = (card) => {
     this.setState({
       answered: true
     })
+    Speech.speak(card.answer)
   }
   
-  correct = () =>{
+  correct = () => {
     this.setState((currentState) => ({
       score: currentState.score + 1,
       counter: currentState.counter +1,
       answered: false,
     }))
+    Speech.stop()
   }
 
   incorrect = () => {
@@ -34,6 +37,7 @@ class Quiz extends Component {
       counter: currentState.counter +1,
       answered: false,
     }))
+    Speech.stop()
   }
 
   reset = () => {
@@ -106,12 +110,22 @@ class Quiz extends Component {
           {!answered
             ? (
               <View >
-                <Button
-                    title='See answer'
-                    color='red'
-                    onPress={this.showAnswer}
-                    style={styles.btn}
-                />
+                <TouchableOpacity
+                  onPress={() => Speech.speak(card.question)}
+                >
+                  <MaterialIcons
+                    name='record-voice-over'
+                    size={30}
+                    color='black'
+                    style={{textAlign: 'center'}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.showAnswer(card)}
+                  style={styles.ansBtn}
+                >
+                  <Text style={styles.ansText}>See answer</Text>
+                </TouchableOpacity>
               </View>
               )
             : (
@@ -119,6 +133,16 @@ class Quiz extends Component {
                 <Text style={[styles.text, styles.answer]}>
                 {card.answer}
                 </Text>
+                <TouchableOpacity
+                  onPress={() => Speech.speak(card.answer)}
+                >
+                  <MaterialIcons
+                    name='record-voice-over'
+                    size={30}
+                    color='black'
+                    style={{textAlign: 'center'}}
+                  />
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.btnCont, {backgroundColor: 'green'}]}
                   onPress={this.correct}
@@ -152,8 +176,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 20,
   },
-  btn: {
+  ansBtn: {
+    color: 'red',
+    alignItems: 'center',
+  },
+  ansText: {
     fontSize: 20,
+    color: 'red',
+    paddingTop: 20,
   },
   btnCont: {
     padding: 10,
