@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
-import { LinearGradient } from "expo-linear-gradient"
 
 import { white } from '../utils/colors'
 import {clearLocalNotifications, setLocalNotification} from '../utils/notifications'
 import {shuffleData} from '../utils/helpers'
+import QuizFinished from './QuizFinished'
+import Answer from './Answer'
 
 
 class Quiz extends Component {
@@ -59,41 +60,13 @@ class Quiz extends Component {
         .then(setLocalNotification)
 
       return (
-        <View style={styles.container}>
-          <Text style={styles.text}>
-            Congratulations! You finished the quiz.{"\n"}Your score is:
-          </Text>
-          <Text style={styles.resultPer}>
-            {Math.round(score/cardNum * 100)}%
-          </Text>
-          <Text style={styles.result}>
-            {score} correct / {cardNum} all
-          </Text>
-          <View style={{alignItems: 'center', padding: 20}}>
-            {score/cardNum === 0 && 
-              <FontAwesome5 name="sad-tear" size={50} color="black"/>
-            }
-            {score/cardNum === 1 && 
-              <FontAwesome5 name="smile-beam" size={50} color="black" />
-            }
-          </View>
-          <View>
-            <TouchableOpacity
-              style={[styles.resultBtn, {backgroundColor: 'black'}]}
-              onPress={this.reset}
-              >
-                <Text style={[styles.btnText, {color: 'white'}]}>Start the Quiz again!</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.resultBtn, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
-                onPress={() => this.props.navigation.navigate(
-                  'DeckView', {'deckId': deckId}
-                )}
-              >
-                <Text style={[styles.btnText, {color: 'black'}]}>Go back to deck</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <QuizFinished
+          score={score}
+          cardNum={cardNum}
+          deckId={deckId}
+          reset={this.reset}
+          navigation={this.props.navigation}
+        />
       )
     }
 
@@ -130,44 +103,11 @@ class Quiz extends Component {
               </View>
               )
             : (
-              <View>
-                <Text style={[styles.text, styles.answer]}>
-                {card.answer}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => Speech.speak(card.answer)}
-                >
-                  <MaterialIcons
-                    name='record-voice-over'
-                    size={30}
-                    color='black'
-                    style={{textAlign: 'center'}}
-                  />
-                </TouchableOpacity>
-                <View style={styles.ansContainer}>
-                    <TouchableOpacity
-                      onPress={this.correct}
-                    >
-                      <LinearGradient
-                        colors={['#79d27d', '#2d7530']}
-                        style={styles.btnCont}
-                      >
-                        <Text style={styles.btnText}>Correct</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={this.incorrect}
-                  >
-                    <LinearGradient
-                      colors={['#f67b7d', '#bb181b']}
-                      style={styles.btnCont}
-                    >
-                      <Text style={styles.btnText}>Incorrect</Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <Answer
+                card={card}
+                correct={this.correct}
+                incorrect={this.incorrect}
+              />
             )
           }
         </View>
@@ -177,11 +117,6 @@ class Quiz extends Component {
 }
 
 const styles = StyleSheet.create({
-  ansContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: white,
@@ -202,17 +137,6 @@ const styles = StyleSheet.create({
     color: 'red',
     paddingTop: 20,
   },
-  btnCont: {
-    padding: 10,
-    borderRadius: 10,
-    marginHorizontal: 15,
-    marginVertical: 25,
-  },
-  btnText: {
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center'
-  },
   counter: {
     alignItems: 'flex-start',
     margin: 10,
@@ -221,30 +145,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18
   },
-  answer: {
-    textShadowColor: 'rgba(0, 0, 0, 0.50)',
-    textShadowOffset: {width: 0, height: 2},
-    textShadowRadius: 4,
-  },
-  resultPer: {
-    color: '#482869',
-    textShadowColor: 'rgba(72, 40, 105, 0.50)',
-    textShadowOffset: {width: 0, height: 2},
-    textShadowRadius: 4,
-    fontSize: 30,
-    textAlign: 'center',
-  },
-  result: {
-    fontSize: 25,
-    textAlign: 'center',
-    color: '#370966',
-  },
-  resultBtn: {
-    padding: 10,
-    borderRadius: 10,
-    marginHorizontal: 50,
-    marginVertical: 10,
-  }
 })
 
 function mapStateToProps(state, {route}) {
