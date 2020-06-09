@@ -4,6 +4,9 @@ import { MaterialIcons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
 import { LinearGradient } from "expo-linear-gradient"
 
+import {defaultLanguage} from '../utils/options'
+
+
 const Answer = (props) => {
   const {card, correct, incorrect} = props
 
@@ -13,7 +16,7 @@ const Answer = (props) => {
       {card.answer}
       </Text>
       <TouchableOpacity
-        onPress={() => Speech.speak(card.answer)}
+        onPress={() => Speech.speak(card.answer, {language: defaultLanguage})}
       >
         <MaterialIcons
           name='record-voice-over'

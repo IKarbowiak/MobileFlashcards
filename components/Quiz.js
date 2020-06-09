@@ -9,6 +9,7 @@ import {clearLocalNotifications, setLocalNotification} from '../utils/notificati
 import {shuffleData} from '../utils/helpers'
 import QuizFinished from './QuizFinished'
 import Answer from './Answer'
+import {defaultLanguage} from '../utils/options'
 
 
 class Quiz extends Component {
@@ -22,7 +23,7 @@ class Quiz extends Component {
     this.setState({
       answered: true
     })
-    Speech.speak(card.answer)
+    Speech.speak(card.answer, {language: defaultLanguage})
   }
   
   correct = () => {
@@ -78,22 +79,29 @@ class Quiz extends Component {
           <Text style={styles.counterText}>{counter} / {cardNum}</Text>
         </View>
         <View style={styles.container}>
-          <Text style={styles.text}>
-                {card.question}
-          </Text>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Text style={styles.text}>
+                  {card.question}
+            </Text>
+            {! answered &&
+              <TouchableOpacity
+                      onPress={() => Speech.speak(
+                        card.question,
+                        {language: defaultLanguage}
+                      )}
+                    >
+                      <MaterialIcons
+                        name='record-voice-over'
+                        size={30}
+                        color='black'
+                        style={{textAlign: 'center'}}
+                      />
+              </TouchableOpacity>
+            }
+          </View>
           {!answered
             ? (
-              <View >
-                <TouchableOpacity
-                  onPress={() => Speech.speak(card.question)}
-                >
-                  <MaterialIcons
-                    name='record-voice-over'
-                    size={30}
-                    color='black'
-                    style={{textAlign: 'center'}}
-                  />
-                </TouchableOpacity>
+              <View style={{flex: 2, justifyContent: 'center'}}>
                 <TouchableOpacity
                   onPress={() => this.showAnswer(card)}
                   style={styles.ansBtn}
@@ -103,11 +111,13 @@ class Quiz extends Component {
               </View>
               )
             : (
-              <Answer
-                card={card}
-                correct={this.correct}
-                incorrect={this.incorrect}
-              />
+              <View style={{flex: 2, justifyContent: 'flex-start'}}>
+                <Answer
+                  card={card}
+                  correct={this.correct}
+                  incorrect={this.incorrect}
+                />
+              </View>
             )
           }
         </View>
