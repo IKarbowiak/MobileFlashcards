@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated} from 'react-native'
+import {View, StyleSheet, ScrollView, TouchableOpacity, Animated} from 'react-native'
 import {AppLoading} from 'expo'
 import {connect} from 'react-redux'
 

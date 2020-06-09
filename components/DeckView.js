@@ -62,6 +62,13 @@ class DeckView extends Component {
           </TouchableOpacity>
         </View>
         <View style={{flex: 1, paddingHorizontal: 70}}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate(
+              'CardsView', {'deckId': deck.title}
+            )}
+          >
+            <Text style={{fontSize: 20}}>Manage deck</Text>
+          </TouchableOpacity>
           <Button
             title='Delete'
             color='red'
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 40,
   },
   text: {

@@ -16,6 +16,7 @@ import NewDeck from './components/NewDeck'
 import DeckView from './components/DeckView'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
+import CardsView from './components/CardsView'
 import {setLocalNotification} from './utils/notifications'
 
 
@@ -101,6 +102,14 @@ const MainNav = () => (
         <Stack.Screen
           name='Quiz'
           component={Quiz}
+          options={{headerTintColor: white, headerStyle: {
+              backgroundColor: 'black',
+            }
+          }}
+        />
+        <Stack.Screen
+          name='CardsView'
+          component={CardsView}
           options={{headerTintColor: white, headerStyle: {
               backgroundColor: 'black',
             }
