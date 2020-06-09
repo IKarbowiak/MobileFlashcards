@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
+import { LinearGradient } from "expo-linear-gradient"
 
 import { white } from '../utils/colors'
 import {clearLocalNotifications, setLocalNotification} from '../utils/notifications'
@@ -143,18 +144,29 @@ class Quiz extends Component {
                     style={{textAlign: 'center'}}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.btnCont, {backgroundColor: 'green'}]}
-                  onPress={this.correct}
-                >
-                  <Text style={[styles.btnText, {color: 'white'}]}>Correct</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.btnCont, {backgroundColor: 'red', color: white}]}
-                  onPress={this.incorrect}
-                >
-                  <Text style={[styles.btnText, {color: 'white'}]}>Incorrect</Text>
-                </TouchableOpacity>
+                <View style={styles.ansContainer}>
+                    <TouchableOpacity
+                      onPress={this.correct}
+                    >
+                      <LinearGradient
+                        colors={['#79d27d', '#2d7530']}
+                        style={styles.btnCont}
+                      >
+                        <Text style={styles.btnText}>Correct</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={this.incorrect}
+                  >
+                    <LinearGradient
+                      colors={['#f67b7d', '#bb181b']}
+                      style={styles.btnCont}
+                    >
+                      <Text style={styles.btnText}>Incorrect</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
               </View>
             )
           }
@@ -165,6 +177,11 @@ class Quiz extends Component {
 }
 
 const styles = StyleSheet.create({
+  ansContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: white,
@@ -188,12 +205,12 @@ const styles = StyleSheet.create({
   btnCont: {
     padding: 10,
     borderRadius: 10,
-    marginHorizontal: 100,
-    marginVertical: 10,
+    marginHorizontal: 15,
+    marginVertical: 25,
   },
   btnText: {
     fontSize: 20,
-    color: white,
+    color: 'white',
     textAlign: 'center'
   },
   counter: {
