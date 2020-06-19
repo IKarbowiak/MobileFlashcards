@@ -53,8 +53,8 @@ class Quiz extends Component {
 
   render() {
     const {counter, score, answered} = this.state
-    const {deckId, questions} = this.props
-    const cardNum = questions.length
+    const {deckId, deckCards, cards} = this.props
+    const cardNum = deckCards.length
   
     if (counter >=  cardNum) {
       clearLocalNotifications()
@@ -71,7 +71,7 @@ class Quiz extends Component {
       )
     }
 
-    const card = questions[counter]
+    const card = cards[deckCards[counter]]
  
     return (
       <View style={{flex: 1, backgroundColor: white}}>
@@ -157,14 +157,15 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state, {route}) {
+function mapStateToProps({decks, cards}, {route}) {
   const {deckId} = route.params
-  const deck = state[deckId]
-  const questions = shuffleData(deck.questions)
+  const deck = decks[deckId]
+  const deckCards = shuffleData(deck.questions)
 
   return {
     deckId,
-    questions
+    deckCards,
+    cards,
   }
 }
 

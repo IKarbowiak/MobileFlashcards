@@ -12,7 +12,7 @@ import {CommonActions} from '@react-navigation/native'
 
 import {saveDeckTitle, getDecks} from '../utils/api'
 import {white} from '../utils/colors'
-import {addDeck} from '../actions'
+import {addDeck} from '../actions/decks'
 
 
 class NewDeck extends Component {
@@ -28,7 +28,7 @@ class NewDeck extends Component {
 
   submit = () => {
     const {title} = this.state
-
+    
     if (title === '') {
       alert('You must fill title field')
       return
@@ -36,21 +36,22 @@ class NewDeck extends Component {
 
     this.props.dispatch(addDeck(title))
 
+    this.props.navigation.dispatch(
+      CommonActions.goBack({
+          key: 'Decks',
+      }))
+
     this.setState({
       title: ''
     })
 
     saveDeckTitle(title)
 
-     this.props.navigation.dispatch(
-      CommonActions.goBack({
-          key: 'Decks',
-      }))
-
   }
 
   render() {
     const {title} = this.state
+
     return (
       <KeyboardAvoidingView
         style={styles.container}

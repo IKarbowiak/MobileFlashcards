@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
 import { Platform, StyleSheet, Text, View, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -124,7 +125,7 @@ export default class App extends Component {
   }
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer, applyMiddleware(thunk))}>
         <View style={styles.container}>
           <FlashcardStatusBar backgroundColor={'black'} barStyle='light-content' />
           <NavigationContainer style={styles.container}>

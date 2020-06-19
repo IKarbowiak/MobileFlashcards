@@ -5,7 +5,7 @@ import {CommonActions} from '@react-navigation/native'
 import {AppLoading} from 'expo'
 
 import {white} from '../utils/colors'
-import {removeDeck} from '../actions'
+import {removeDeck} from '../actions/decks'
 import {dropDeck} from '../utils/api'
 
 
@@ -119,10 +119,10 @@ const styles = StyleSheet.create({
 })
 
 
-function mapStateToProps(state, {route}) {
+function mapStateToProps({decks}, {route}) {
   const {deckId} = route.params
   return {
-    deck: state[deckId]
+    deck: decks[deckId],
   }
 }
 

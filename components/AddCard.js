@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {CommonActions} from '@react-navigation/native'
 
 import { white } from '../utils/colors'
-import {addCardToDeck} from '../actions'
+import {handleAddCard} from '../actions/cards'
 import {submitCard} from '../utils/api'
 
 
@@ -35,7 +35,7 @@ class AddCard extends Component {
       return
     }
 
-    dispatch(addCardToDeck(deckId, {question, answer}))
+    dispatch(handleAddCard(deckId, {question, answer}))
 
     submitCard(deckId, {question, answer})
 

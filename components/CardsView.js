@@ -5,12 +5,12 @@ import { white } from '../utils/colors'
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
 
 
-function Item({ item }) {
+function Item({ card }) {
   return (
     <View style={styles.itemCont}>
       <View style={styles.item}>
-        <Text style={styles.question}>{item.question}</Text>
-        <Text style={styles.answer}>{item.answer}</Text>
+        <Text style={styles.question}>{card.question}</Text>
+        <Text style={styles.answer}>{card.answer}</Text>
       </View>
       <View style={styles.options}>
         <AntDesign name="edit" size={24} color="black" style={{marginHorizontal: 8}}/>
@@ -23,7 +23,7 @@ function Item({ item }) {
 
 class CardsView extends Component {
   render() {
-    const {deck} = this.props
+    const {deck, cards} = this.props
     return (
       <View style={styles.container}>
         <View style={styles.titleCont}>
@@ -31,8 +31,8 @@ class CardsView extends Component {
         </View>
         <FlatList
           data={deck.questions}
-          renderItem={({ item }) => <Item item={item} />}
-          keyExtractor={item => item.question}
+          renderItem={({ item }) => <Item card={cards[item]} />}
+          keyExtractor={item => item}
         />
       </View>
     )
@@ -81,10 +81,11 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(decks, {route}) {
+function mapStateToProps({decks, cards}, {route}) {
   const {deckId} = route.params
   return {
-    deck: decks[deckId]
+    deck: decks[deckId],
+    cards,
   }
 }
 

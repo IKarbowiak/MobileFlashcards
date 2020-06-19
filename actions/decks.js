@@ -18,17 +18,17 @@ export function addDeck(title) {
   }
 }
 
-export function addCardToDeck(deckId, card) {
+export function addCardToDeck(deckId, cardId) {
   return {
     type: ADD_CARD_TO_DECK,
     deckId,
-    card
+    cardId,
   }
 }
 
 export function removeDeck(title) {
   return {
     type: REMOVE_DECK,
-    title
+    title,
   }
 }
