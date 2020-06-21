@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import {View, Text, FlatList, StyleSheet} from 'react-native'
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import { white } from '../utils/colors'
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
+import {handleDeleteCard} from '../actions/cards'
 
 
-function Item({ card }) {
+function Item({card, deleteFunc}) {
   return (
     <View style={styles.itemCont}>
       <View style={styles.item}>
@@ -13,8 +14,22 @@ function Item({ card }) {
         <Text style={styles.answer}>{card.answer}</Text>
       </View>
       <View style={styles.options}>
-        <AntDesign name="edit" size={24} color="black" style={{marginHorizontal: 8}}/>
-        <EvilIcons name="trash" size={30} color="black" style={{marginHorizontal: 8}} />
+        <TouchableOpacity key={`${card}-manage`} onPress={() => console.log("edit")}>
+          <AntDesign
+            name="edit"
+            size={24}
+            color="black"
+            style={{marginHorizontal: 8}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity key={`${card}-del`} onPress={() => deleteFunc(card)}>
+          <EvilIcons
+            name="trash"
+            size={30}
+            color="black"
+            style={{marginHorizontal: 8}}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -22,6 +37,11 @@ function Item({ card }) {
 
 
 class CardsView extends Component {
+  deleteCard = (card) => {
+    const {deck, dispatch} = this.props
+    dispatch(handleDeleteCard(deck.title, card))
+  }
+
   render() {
     const {deck, cards} = this.props
     return (
@@ -31,7 +51,9 @@ class CardsView extends Component {
         </View>
         <FlatList
           data={deck.questions}
-          renderItem={({ item }) => <Item card={cards[item]} />}
+          renderItem={
+            ({ item }) => <Item card={cards[item]} deleteFunc={this.deleteCard}/>
+          }
           keyExtractor={item => item}
         />
       </View>

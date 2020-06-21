@@ -30,8 +30,11 @@ export function saveQuestion(question, answer) {
       question,
       answer,
     }
-    return AsyncStorage.mergeItem(QUESTIONS_STORAGE_KEY, JSON.stringify({
+    const data = {
       cardId: card
+    }
+    return AsyncStorage.mergeItem(QUESTIONS_STORAGE_KEY, JSON.stringify({
+      [cardId]: card
     })).then(() => card)
 }
 
@@ -44,6 +47,30 @@ export function submitCard(deckId, cardId) {
       AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({
         [deckId]: deck
       }))
+    })
+}
+
+export function dropCard(deckId, cardId) {
+  return removeCard(cardId).then(
+    () => removeCardFromDeck(deckId, cardId)
+  )
+}
+
+function removeCard(cardId) {
+  return AsyncStorage.getItem(QUESTIONS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      delete data[cardId]
+      AsyncStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(data))
+    })
+}
+
+function removeCardFromDeck(deckId, cardId) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      data[deckId].questions = data[deckId].questions.filter(item => item !== cardId)
+      AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
     })
 }
 

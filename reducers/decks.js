@@ -1,4 +1,11 @@
-import {RECEIVE_DECKS, ADD_DECK, ADD_CARD_TO_DECK, REMOVE_DECK} from '../actions/decks'
+import {
+  RECEIVE_DECKS,
+  ADD_DECK,
+  ADD_CARD_TO_DECK,
+  REMOVE_CARD_FROM_DECK,
+  REMOVE_DECK
+} from '../actions/decks'
+
 
 export default function decks(state={}, action) {
   switch(action.type) {
@@ -27,6 +34,14 @@ export default function decks(state={}, action) {
       delete state[action.title]
       return {
         ...state
+      }
+    case REMOVE_CARD_FROM_DECK:
+      return {
+        ...state,
+        [action.deckId]: {
+          ...state[action.deckId],
+          questions: state[action.deckId].questions.filter(q => q !== action.cardId)
+        }
       }
     default :
       return state

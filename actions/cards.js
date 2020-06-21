@@ -1,5 +1,5 @@
-import {addCardToDeck} from './decks'
-import {saveCard} from '../utils/api'
+import {addCardToDeck, removeCardFromDeck} from './decks'
+import {saveCard, dropCard} from '../utils/api'
 
 export const RECEIVE_CARDS = 'RECEIVE_CARDS'
 export const ADD_CARD = 'ADD_CARD'
@@ -28,11 +28,26 @@ export function removeCard(cardId) {
 }
 
 export function handleAddCard(deckId, card) {
-  return (dispatch, getState) => {
+  return (dispatch, _) => {
     return saveCard(deckId, card)
       .then((card) => {
         dispatch(addCard(card))
         dispatch(addCardToDeck(deckId, card.id))
+      })
+  }
+}
+
+export function handleDeleteCard(deckId, card) {
+  return (dispatch, _) => {
+    const cardId = card.id
+    dispatch(removeCard(cardId))
+    dispatch(removeCardFromDeck(deckId, cardId))
+    return dropCard(deckId, cardId)
+      .catch((e) => {
+        console.warn('Error in handleDeleteCard', e)
+        dispatch(addCard(card))
+        dispatch(addCardToDeck(deckId, cardId))
+        alert('There was an error deleting card. Try again.')
       })
   }
 }
