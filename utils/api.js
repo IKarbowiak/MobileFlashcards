@@ -105,3 +105,16 @@ export function saveDeckTitle(title) {
     }
   }))
 }
+
+export function cardUpdate(cardId, newQuestion, newAnswer) {
+  return AsyncStorage.getItem(QUESTIONS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      data[cardId] = {
+        id: cardId,
+        question: newQuestion,
+        answer: newAnswer,
+      }
+      AsyncStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(data))
+    })
+}

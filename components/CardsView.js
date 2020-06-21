@@ -1,38 +1,63 @@
 import React, {Component} from 'react'
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
 import {connect} from 'react-redux'
 import { white } from '../utils/colors'
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
 import {handleDeleteCard} from '../actions/cards'
+import UpdateCardModal  from './UpdateCardModal'
 
 
-function Item({card, deleteFunc}) {
-  return (
-    <View style={styles.itemCont}>
-      <View style={styles.item}>
-        <Text style={styles.question}>{card.question}</Text>
-        <Text style={styles.answer}>{card.answer}</Text>
+class Item extends Component {
+  state = {
+    modalVisible: false,
+  }
+
+  setModalVisible = () => {
+    this.setState({
+      modalVisible: true,
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      modalVisible: false,
+    })
+  }
+  render() {
+    const {card, deleteFunc} = this.props
+    const {modalVisible} = this.state
+    return (
+      <View style={styles.itemCont}>
+        <UpdateCardModal
+          modalVisible={modalVisible}
+          closeModal={this.closeModal}
+          card={card}
+        />
+        <View style={styles.item}>
+          <Text style={styles.question}>{card.question}</Text>
+          <Text style={styles.answer}>{card.answer}</Text>
+        </View>
+        <View style={styles.options}>
+          <TouchableOpacity key={`${card}-manage`} onPress={this.setModalVisible}>
+            <AntDesign
+              name="edit"
+              size={24}
+              color="black"
+              style={{marginHorizontal: 8}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity key={`${card}-del`} onPress={() => deleteFunc(card)}>
+            <EvilIcons
+              name="trash"
+              size={30}
+              color="black"
+              style={{marginHorizontal: 8}}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.options}>
-        <TouchableOpacity key={`${card}-manage`} onPress={() => console.log("edit")}>
-          <AntDesign
-            name="edit"
-            size={24}
-            color="black"
-            style={{marginHorizontal: 8}}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity key={`${card}-del`} onPress={() => deleteFunc(card)}>
-          <EvilIcons
-            name="trash"
-            size={30}
-            color="black"
-            style={{marginHorizontal: 8}}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    )
+  }
 }
 
 
@@ -51,8 +76,14 @@ class CardsView extends Component {
         </View>
         <FlatList
           data={deck.questions}
-          renderItem={
-            ({ item }) => <Item card={cards[item]} deleteFunc={this.deleteCard}/>
+          renderItem={({ item }) => (
+            <View>
+              <Item
+                card={cards[item]}
+                deleteFunc={this.deleteCard}
+              />
+            </View>
+          )
           }
           keyExtractor={item => item}
         />
@@ -100,7 +131,7 @@ const styles = StyleSheet.create({
   },
   answer: {
     fontSize: 15,
-  }
+  },
 })
 
 function mapStateToProps({decks, cards}, {route}) {
