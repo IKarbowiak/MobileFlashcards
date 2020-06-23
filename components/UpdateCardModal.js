@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, View, Text, TouchableHighlight, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
+import {Modal, View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import {handleUpdateCard} from '../actions/cards'
 import { white } from '../utils/colors'
@@ -54,7 +54,13 @@ class UpdateCardModal extends Component {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Question: </Text>
+              <View style={styles.mainTextCont}>
+                <Text style={[styles.modalText, {fontSize: 15}]}>
+                  If you want to update card, change the values below:
+                </Text>
+              </View>
+
+              <Text style={[styles.modalText, {marginTop: 20}]}>Question: </Text>
                 <TextInput
                   style={styles.input}
                   value={newQuestion}
@@ -67,16 +73,17 @@ class UpdateCardModal extends Component {
                 onChangeText={this.onChangeAnswer}
               />
 
-              <TouchableHighlight style={styles.openButton} onPress={this.update}>
-                <Text style={styles.btnText}>Update</Text>
-              </TouchableHighlight>
-  
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: white }}
-                onPress={this.close}
-              >
-                <Text style={[styles.btnText, {color: 'black'}]}>Back</Text>
-              </TouchableHighlight>
+              <View style={styles.btnCont}>
+                <TouchableOpacity style={styles.buttons} onPress={this.update}>
+                  <Text style={styles.btnText}>Update</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ ...styles.buttons, backgroundColor: "white"}}
+                  onPress={this.close}
+                >
+                  <Text style={[styles.btnText, {color: 'black'}]}>Back</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     marginTop: 22,
     backgroundColor: 'rgba(0,0,0,0.7)',
   },
@@ -98,7 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -108,11 +113,20 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
-  openButton: {
+  mainTextCont: {
+    borderRadius: Platform.OS === 'ios' ? 8 : 2,
+    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    padding: 10,
+  },
+   buttons: {
     backgroundColor: "black",
     borderRadius: 10,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginHorizontal: 5,
+    marginTop: 10,
   },
   textStyle: {
     color: "white",
@@ -120,7 +134,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalText: {
-    textAlign: "center"
+    textAlign: "center",
+    fontWeight: "bold",
   },
   input: {
     borderColor: 'gray',
@@ -133,7 +148,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: white,
     textAlign: 'center'
-  }
+  },
+  btnCont: {
+    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
 })
 
 export default connect()(UpdateCardModal)
