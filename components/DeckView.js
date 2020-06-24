@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet, Button, Platform} from 'react-
 import {connect} from 'react-redux'
 import {CommonActions} from '@react-navigation/native'
 import {AppLoading} from 'expo'
+import { FontAwesome, EvilIcons } from '@expo/vector-icons'
 
 import {white} from '../utils/colors'
 import {removeDeck} from '../actions/decks'
@@ -43,7 +44,7 @@ class DeckView extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{flex: 4, justifyContent: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
           <Text style={styles.text}>{deck.title}</Text>
           <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
           <TouchableOpacity
@@ -61,20 +62,27 @@ class DeckView extends Component {
             <Text style={styles.btnText}>Start Quiz</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, paddingHorizontal: 70}}>
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 50}}>
+          <TouchableOpacity onPress={this.delete} >
+            <EvilIcons
+                name="trash"
+                size={50}
+                color="red"
+                style={{marginHorizontal: 20}}
+              />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate(
               'CardsView', {'deckId': deck.title}
             )}
           >
-            <Text style={{fontSize: 20}}>Manage deck</Text>
+            <FontAwesome
+              name="edit"
+              size={40}
+              color="black"
+              style={{marginHorizontal: 20}}
+            />
           </TouchableOpacity>
-          <Button
-            title='Delete'
-            color='red'
-            onPress={this.delete}
-            style={{fontSize: 20}}
-          />
         </View>
       </View>
     )
@@ -87,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: white,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 40,
+    padding: 20,
   },
   text: {
     fontSize: 40,
