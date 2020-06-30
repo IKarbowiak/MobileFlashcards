@@ -5,40 +5,59 @@ import { white } from '../utils/colors'
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
 import {handleDeleteCard} from '../actions/cards'
 import UpdateCardModal  from './UpdateCardModal'
+import DeleteModal from './DeleteModal'
 
 
 class Item extends Component {
   state = {
-    modalVisible: false,
+    updateModalVisible: false,
+    deleteModalVisible: false,
   }
 
-  setModalVisible = () => {
+  setModalVisible = (item) => {
     this.setState({
-      modalVisible: true,
+      [item]: true,
     })
   }
 
-  closeModal = () => {
+  closeUpdateModal = () => {
     this.setState({
-      modalVisible: false,
+      updateModalVisible: false,
     })
   }
+
+  closeDeleteModal = () => {
+    this.setState({
+      deleteModalVisible: false,
+    })
+  }
+
   render() {
     const {card, deleteFunc} = this.props
-    const {modalVisible} = this.state
+    const {updateModalVisible, deleteModalVisible} = this.state
     return (
       <View style={styles.itemCont}>
         <UpdateCardModal
-          modalVisible={modalVisible}
-          closeModal={this.closeModal}
+          modalVisible={updateModalVisible}
+          closeModal={this.closeUpdateModal}
           card={card}
+        />
+        <DeleteModal
+          modalVisible={deleteModalVisible}
+          closeModal={this.closeDeleteModal}
+          deleteFunc={deleteFunc}
+          type='card'
+          item={card}
         />
         <View style={styles.item}>
           <Text style={styles.question}>{card.question}</Text>
           <Text style={styles.answer}>{card.answer}</Text>
         </View>
         <View style={styles.options}>
-          <TouchableOpacity key={`${card}-manage`} onPress={this.setModalVisible}>
+          <TouchableOpacity
+            key={`${card}-manage`}
+            onPress={() => this.setModalVisible('updateModalVisible')}
+          >
             <AntDesign
               name="edit"
               size={24}
@@ -46,7 +65,10 @@ class Item extends Component {
               style={{marginHorizontal: 8}}
             />
           </TouchableOpacity>
-          <TouchableOpacity key={`${card}-del`} onPress={() => deleteFunc(card)}>
+          <TouchableOpacity
+            key={`${card}-del`}
+            onPress={() => this.setModalVisible('deleteModalVisible')}
+          >
             <EvilIcons
               name="trash"
               size={30}

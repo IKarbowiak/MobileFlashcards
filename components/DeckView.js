@@ -8,11 +8,16 @@ import { FontAwesome, EvilIcons } from '@expo/vector-icons'
 import {white} from '../utils/colors'
 import {removeDeck} from '../actions/decks'
 import {dropDeck} from '../utils/api'
+import DeleteModal from './DeleteModal'
 
 
 class DeckView extends Component {
-  delete = () => {
-    const {deck, dispatch} = this.props
+  state = {
+    modalDeleteVisible: false,
+  }
+
+  delete = (deck) => {
+    const {dispatch} = this.props
     const title = deck.title
     dispatch(removeDeck(title))
 
@@ -23,6 +28,18 @@ class DeckView extends Component {
 
     dropDeck(title)
 
+  }
+
+  openModal = () => {
+    this.setState({
+      modalDeleteVisible: true,
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      modalDeleteVisible: false,
+    })
   }
 
   startQuiz = () => {
@@ -36,6 +53,7 @@ class DeckView extends Component {
     )
   }
   render () {
+    const {modalDeleteVisible} = this.state
     const {deck} = this.props
 
     if (deck === undefined) {
@@ -44,6 +62,13 @@ class DeckView extends Component {
 
     return (
       <View style={styles.container}>
+        <DeleteModal
+          modalVisible={modalDeleteVisible}
+          closeModal={this.closeModal}
+          deleteFunc={this.delete}
+          type='deck'
+          item={deck}
+        />
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
           <Text style={styles.text}>{deck.title}</Text>
           <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
@@ -63,7 +88,7 @@ class DeckView extends Component {
           </TouchableOpacity>
         </View>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 50}}>
-          <TouchableOpacity onPress={this.delete} >
+          <TouchableOpacity onPress={this.openModal} >
             <EvilIcons
                 name="trash"
                 size={50}
