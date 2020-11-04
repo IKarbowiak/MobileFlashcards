@@ -6,6 +6,7 @@ import {CommonActions} from '@react-navigation/native'
 import { white } from '../utils/colors'
 import {handleAddCard} from '../actions/cards'
 import {submitCard} from '../utils/api'
+import { ScrollView } from 'react-native'
 
 
 class AddCard extends Component {
@@ -46,7 +47,7 @@ class AddCard extends Component {
 
     this.props.navigation.dispatch(
       CommonActions.goBack({
-          key: 'DeckView',
+          key: 'CardsView',
       }))
 
   }
@@ -55,27 +56,33 @@ class AddCard extends Component {
     const {question, answer} = this.state
 
     return (
-      <KeyboardAvoidingView
+      <ScrollView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : null}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
       >
-        <Text style={styles.text}>Insert question and answer below</Text>
-        <TextInput
-          style={styles.input}
-          value={question}
-          placeholder="...question here"
-          onChangeText={this.onChangeQuestion}
-        />
-        <TextInput
-          style={styles.input}
-          value={answer}
-          placeholder="...answer here"
-          onChangeText={this.onChangeAnswer}
-        />
-        <TouchableOpacity style={styles.btnCont} onPress={this.submit}>
-          <Text style={styles.btnText}>Submit</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : null}
+        >
+          <Text style={styles.text}>Insert question and answer below</Text>
+          <TextInput
+            multiline={true}
+            style={styles.input}
+            value={question}
+            placeholder="...question here"
+            onChangeText={this.onChangeQuestion}
+          />
+          <TextInput
+            multiline={true}
+            style={styles.input}
+            value={answer}
+            placeholder="...answer here"
+            onChangeText={this.onChangeAnswer}
+          />
+          <TouchableOpacity style={styles.btnCont} onPress={this.submit}>
+            <Text style={styles.btnText}>Submit</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </ScrollView>
     )
   }
 }
@@ -84,9 +91,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: white,
-    justifyContent: 'center',
     padding: 40,
   },
+
   text: {
     fontSize: 40,
     textAlign: 'center',

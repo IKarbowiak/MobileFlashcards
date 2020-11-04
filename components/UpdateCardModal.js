@@ -61,13 +61,15 @@ class UpdateCardModal extends Component {
               </View>
 
               <Text style={[styles.modalText, {marginTop: 20}]}>Question: </Text>
-                <TextInput
-                  style={styles.input}
-                  value={newQuestion}
-                  onChangeText={this.onChangeQuestion}
-                />
+              <TextInput
+                multiline={true}
+                style={styles.input}
+                value={newQuestion}
+                onChangeText={this.onChangeQuestion}
+              />
               <Text style={styles.modalText}>Answer:</Text>
               <TextInput
+                multiline={true}
                 style={styles.input}
                 value={newAnswer}
                 onChangeText={this.onChangeAnswer}
@@ -143,6 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: Platform.OS === 'ios' ? 8 : 2,
     padding: 5,
     margin: 10,
+    flexWrap: "wrap",
   },
   btnText: {
     fontSize: 15,

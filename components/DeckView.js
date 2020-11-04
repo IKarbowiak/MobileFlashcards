@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Button, Platform} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import {CommonActions} from '@react-navigation/native'
 import {AppLoading} from 'expo'

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import { white } from '../utils/colors'
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
@@ -109,6 +109,19 @@ class CardsView extends Component {
           }
           keyExtractor={item => item}
         />
+        <TouchableOpacity
+          style={styles.addBtn}
+          onPress={() => this.props.navigation.navigate(
+            'AddCard', {'deckId': deck.title}
+          )}
+        >
+          <AntDesign
+              name="pluscircle"
+              size={40}
+              color="black"
+              style={{marginHorizontal: 8}}
+          />
+        </TouchableOpacity>
       </View>
     )
   }
@@ -153,6 +166,18 @@ const styles = StyleSheet.create({
   },
   answer: {
     fontSize: 15,
+  },
+  addBtnTxt : {
+    color: white,
+    fontSize: 30,
+    marginBottom: 5
+  },
+  addBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 40,
+    right: 20,
   },
 })
 
