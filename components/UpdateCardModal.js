@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
+import {Modal, View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import {handleUpdateCard} from '../actions/cards'
 import { white } from '../utils/colors'
@@ -52,7 +52,10 @@ class UpdateCardModal extends Component {
             Alert.alert("Modal has been closed.");
           }}
         >
-          <View style={styles.centeredView}>
+          <ScrollView
+            style={styles.centeredView}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          >
             <View style={styles.modalView}>
               <View style={styles.mainTextCont}>
                 <Text style={[styles.modalText, {fontSize: 15}]}>
@@ -87,7 +90,7 @@ class UpdateCardModal extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </ScrollView>
         </Modal>
       </View>
     )
@@ -97,7 +100,6 @@ class UpdateCardModal extends Component {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
     marginTop: 22,
     backgroundColor: 'rgba(0,0,0,0.7)',
   },
