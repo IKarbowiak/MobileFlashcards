@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 40,
+    fontSize: 35,
     textAlign: 'center',
     paddingBottom: 20,
   },

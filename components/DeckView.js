@@ -73,15 +73,7 @@ class DeckView extends Component {
           <Text style={styles.text}>{deck.title}</Text>
           <Text style={styles.cardsInfo}>{deck.questions.length} cards</Text>
           <TouchableOpacity
-            style={[styles.btnCont, {backgroundColor: white, borderWidth: 1, borderColor: 'black'}]}
-            onPress={() => this.props.navigation.navigate(
-              'AddCard', {'deckId': deck.title}
-            )}
-          >
-            <Text style={[styles.btnText, {color: 'black'}]}>Add Card</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnCont, {backgroundColor: 'black'}]}
+            style={styles.btnCont}
             onPress={this.startQuiz}
           >
             <Text style={styles.btnText}>Start Quiz</Text>
@@ -123,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   text: {
-    fontSize: 40,
+    fontSize: 50,
     textAlign: 'center',
   },
   input: {
@@ -137,6 +129,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 100,
     marginVertical: 10,
+    backgroundColor: 'black',
+    marginTop: 20,
   },
   btnText: {
     fontSize: 20,
@@ -144,10 +138,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   cardsInfo: {
-    fontSize: 20,
+    fontSize: 25,
     color: '#A9A9A9',
     textAlign: 'center',
-    paddingBottom: 20,
+    paddingBottom: 25,
   },
 })
 
