@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
 import { LinearGradient } from "expo-linear-gradient"
@@ -11,7 +11,9 @@ const Answer = (props) => {
   const {card, correct, incorrect} = props
 
   return (
-    <View>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+    >
       <Text style={[styles.text, styles.answer]}>
       {card.answer}
       </Text>
@@ -48,7 +50,7 @@ const Answer = (props) => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 35,
+    fontSize: 30,
     textAlign: 'center',
     paddingBottom: 20,
   },

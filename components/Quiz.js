@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
 import { connect } from 'react-redux'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
@@ -74,7 +74,10 @@ class Quiz extends Component {
     const card = cards[deckCards[counter]]
  
     return (
-      <View style={{flex: 1, backgroundColor: white}}>
+      <ScrollView
+        style={{flex: 1, backgroundColor: white}}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+      >
         <View style={styles.counter}>
           <Text style={styles.counterText}>{counter} / {cardNum}</Text>
         </View>
@@ -111,7 +114,7 @@ class Quiz extends Component {
               </View>
               )
             : (
-              <View style={{flex: 2, justifyContent: 'flex-start'}}>
+              <View style={{flex: 1, justifyContent: 'flex-start'}}>
                 <Answer
                   card={card}
                   correct={this.correct}
@@ -121,7 +124,7 @@ class Quiz extends Component {
             )
           }
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   text: {
-    fontSize: 40,
+    fontSize: 32,
     textAlign: 'center',
     paddingBottom: 20,
   },
